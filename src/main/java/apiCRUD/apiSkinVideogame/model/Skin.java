@@ -9,13 +9,28 @@ import lombok.Data;
 public class Skin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="skinID")
+    @Column(name = "idSkin")
     private Integer id;
-
     private String name;
     private String type;
-    private float price;
+
+    private String price;
     private String colour;
     private String description;
-    private boolean availability;
+
+    @ManyToOne
+    @JoinColumn(name = "id_user", nullable = false)
+    private User user;
+
+    @Override
+    public String toString() {
+        return "Skin{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", price='" + price + '\'' +
+                ", colour='" + colour + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }
