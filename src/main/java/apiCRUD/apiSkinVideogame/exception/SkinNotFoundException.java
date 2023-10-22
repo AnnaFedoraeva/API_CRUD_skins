@@ -1,7 +1,7 @@
 package apiCRUD.apiSkinVideogame.exception;
 
 public class SkinNotFoundException extends  RuntimeException {
-    public SkinNotFoundException(Integer id) {
+    public SkinNotFoundException(Long id) {
 
         super("Could not find skin with id: " + id);
     }

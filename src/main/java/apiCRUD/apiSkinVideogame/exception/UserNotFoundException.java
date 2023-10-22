@@ -2,7 +2,7 @@ package apiCRUD.apiSkinVideogame.exception;
 
 public class UserNotFoundException extends RuntimeException {
 
-    public UserNotFoundException(Integer id) {
+    public UserNotFoundException(Long id) {
 
         super("Could not find user with id: " + id);
     }

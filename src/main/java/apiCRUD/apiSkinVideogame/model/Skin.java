@@ -10,7 +10,7 @@ public class Skin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idSkin")
-    private Integer id;
+    private Long id;
     private String name;
     private String type;
 

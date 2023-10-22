@@ -6,8 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface SkinRepository extends JpaRepository<Skin, Integer> {
+public interface SkinRepository extends JpaRepository<Skin, Long> {
 
-
-    Skin findByUserAndId(User user, int skinId);
+    Skin findByUserAndId(User user, Long skinId);
 }
