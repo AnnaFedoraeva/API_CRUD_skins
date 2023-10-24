@@ -1,11 +1,11 @@
 package apiCRUD.apiSkinVideogame.request;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 
 import java.util.Set;
-
-
-import jakarta.validation.constraints.*;
 
 @Getter
 public class SignupRequest {

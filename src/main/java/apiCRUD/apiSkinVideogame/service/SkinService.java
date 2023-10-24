@@ -2,6 +2,7 @@ package apiCRUD.apiSkinVideogame.service;
 
 import apiCRUD.apiSkinVideogame.exception.FileReadException;
 import apiCRUD.apiSkinVideogame.exception.SkinNotFoundException;
+import apiCRUD.apiSkinVideogame.exception.UserNotFoundException;
 import apiCRUD.apiSkinVideogame.model.Skin;
 import apiCRUD.apiSkinVideogame.model.User;
 import apiCRUD.apiSkinVideogame.repository.SkinRepository;
@@ -47,15 +48,43 @@ public class SkinService {
     }
 
 
-    public Skin findSkinByIDinJson(Long skinID) {
-        List<Skin> skins = readFileAndGetAllAvailable();
-        return skins.stream().filter(sk -> sk.getId().equals(skinID)).findFirst()
-                .orElseThrow(() -> new SkinNotFoundException(skinID));
+//    public Skin findSkinByIDinJson(Long skinID) {
+//        List<Skin> skins = readFileAndGetAllAvailable();
+//        System.out.println("skinID: " + skinID);
+//        return skins.stream().filter(sk -> sk.getId().equals(skinID)).findFirst()
+//                .orElseThrow(() -> new SkinNotFoundException(skinID));
+//    }
+public Skin findSkinByIDinJson(Long skinID) {
+    List<Skin> skins = readFileAndGetAllAvailable();
+    System.out.println("skinID: " + skinID);
+    for (Skin skin : skins) {
+        System.out.println(skin);
+        if (skin.getId().equals(skinID)) {
+            System.out.println(skin.getId() + " = " + skinID);
+            return skin;
+        }
     }
+    throw new SkinNotFoundException(skinID);
+}
 
 
-    public void addSkinByUser(Long skinID, User user) throws IOException {
+
+
+//    public void addSkinByUser(Long skinID, User user) throws IOException {
+//        Skin skinToAdd = findSkinByIDinJson(skinID);
+//        skinToAdd.setUser(user);
+//        user.getMyListOfSkins().add(skinToAdd);
+//        userRepository.save(user);
+//        skinRepository.save(skinToAdd);
+//        List<Skin> skins = removeSkinFromListOfAvailableSkins(skinToAdd.getId());
+//        saveSkinsToJson(skins);
+//    }
+
+    public void addSkinByUser(Long skinID, Long id) throws IOException {
+        User user = findUserByid(id);
+        System.out.println("user in add skin: " + user);
         Skin skinToAdd = findSkinByIDinJson(skinID);
+        System.out.println("skin to add: " + skinToAdd);
         skinToAdd.setUser(user);
         user.getMyListOfSkins().add(skinToAdd);
         userRepository.save(user);
@@ -63,6 +92,12 @@ public class SkinService {
         List<Skin> skins = removeSkinFromListOfAvailableSkins(skinToAdd.getId());
         saveSkinsToJson(skins);
     }
+
+    public User findUserByid (Long id){
+        return userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(id));
+    }
+
 
     public List<Skin> removeSkinFromListOfAvailableSkins(Long skinID) {
         List<Skin> skins = readFileAndGetAllAvailable();
@@ -84,12 +119,16 @@ public class SkinService {
         }
     }
 
-    public List<Skin> getMySkins(User user) {
+
+
+    public List<Skin> getMySkins(Long id) {
+        User user = findUserByid(id);
         return user.getMyListOfSkins();
     }
 
 
-    public String changeSkinColor(User user, Long skinID, String newColor) {
+    public String changeSkinColor(Long id, Long skinID, String newColor) {
+        User user = findUserByid(id);
         List<Skin> skins = user.getMyListOfSkins();
         Skin skin = skins.stream().filter(sk -> sk.getId().equals(skinID)).findFirst()
                 .orElseThrow(() -> new SkinNotFoundException(skinID));
@@ -100,7 +139,8 @@ public class SkinService {
     }
 
 
-    public String deleteSkinByUser(Long skinID, User user) throws IOException {
+    public String deleteSkinByUser(Long skinID, Long id) throws IOException {
+        User user = findUserByid(id);
         List<Skin> mySkins = user.getMyListOfSkins();
         Skin skinToRemove = mySkins.stream().filter(sk -> sk.getId().equals(skinID)).findFirst()
                 .orElseThrow(() -> new SkinNotFoundException(skinID));
