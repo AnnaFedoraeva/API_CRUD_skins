@@ -87,8 +87,13 @@ public Skin findSkinByIDinJson(Long skinID) {
         System.out.println("skin to add: " + skinToAdd);
         skinToAdd.setUser(user);
         user.getMyListOfSkins().add(skinToAdd);
-        userRepository.save(user);
-        skinRepository.save(skinToAdd);
+        System.out.println("list of skin: " + user.getMyListOfSkins().get(skinToAdd.getId().intValue()));
+        //System.out.println("list of user in repo: " + userRepository.getReferenceById(id));
+        //System.out.println("list of skin in repo: " + skinRepository.getReferenceById(skinID));
+        //skinRepository.save(skinToAdd);
+        System.out.println("skinSaved: " + skinRepository.save(skinToAdd));
+        //userRepository.save(user);
+        System.out.println("userSaved: " + userRepository.save(user) + " " + skinRepository.findAll());
         List<Skin> skins = removeSkinFromListOfAvailableSkins(skinToAdd.getId());
         saveSkinsToJson(skins);
     }
@@ -121,9 +126,17 @@ public Skin findSkinByIDinJson(Long skinID) {
 
 
 
-    public List<Skin> getMySkins(Long id) {
+
+
+    public String getMySkins(Long id) {
         User user = findUserByid(id);
-        return user.getMyListOfSkins();
+        List<Skin> skins = user.getMyListOfSkins();
+        StringBuilder sb = new StringBuilder();
+        sb.append("\n");
+        for (Skin skin : skins) {
+            sb.append("\n").append(skin.toString()).append("\n");
+        }
+        return sb.toString();
     }
 
 
