@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1,
+    "name": "Dragon Skin",
+    "type": "Legendary",
+    "price": "6",
+    "colour": "Red",
+    "description": "This skin is inspired by the legendary dragon of the east. It is said to bring good luck and fortune to those who wield it.",
+    "user": null
+  },
+  {
+    "id": 2,
+    "name": "Ninja Skin",
+    "type": "Epic",
+    "price": "4.99",
+    "colour": "Black",
+    "description": "This skin is inspired by the stealthy and deadly ninja warriors of ancient Japan. It is perfect for those who prefer to strike from the shadows.",
+    "user": null
+  },
+  {
+    "id": 3,
+    "name": "Pirate Skin",
+    "type": "Rare",
+    "price": "2.99",
+    "colour": "Brown",
+    "description": "This skin is inspired by the swashbuckling pirates of the high seas. It is perfect for those who love adventure and treasure hunting.",
+    "user": null
+  },
+  {
+    "id": 4,
+    "name": "Alien Skin",
+    "type": "Legendary",
+    "price": "9.99",
+    "colour": "Green",
+    "description": "This skin is inspired by the extraterrestrial beings from outer space. It is perfect for those who want to show off their otherworldly powers.",
+    "user": null
+  },
+  {
+    "id": 5,
+    "name": "Knight Skin",
+    "type": "Epic",
+    "price": "4.99",
+    "colour": "Silver",
+    "description": "This skin is inspired by the brave and chivalrous knights of medieval times. It is perfect for those who want to defend their honor and protect the weak.",
+    "user": null
+  }
+]

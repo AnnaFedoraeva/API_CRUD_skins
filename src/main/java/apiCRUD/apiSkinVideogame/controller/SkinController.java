@@ -25,19 +25,11 @@ public class SkinController {
 
     @GetMapping("/available")
     @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
-    public ResponseEntity<?> getAllAvailable() {
-        return new ResponseEntity<>(skinService.readFileAndGetAllAvailable(), HttpStatus.OK);
+    public ResponseEntity<?> getAllAvailable() throws IOException {
+        return new ResponseEntity<>(skinService.readSkinsFromJson(), HttpStatus.OK);
 
     }
 
-
-    @GetMapping("/{skinID}")
-    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
-    public ResponseEntity<?> skin(@PathVariable(value = "skinID") Long skinID) {
-        return new ResponseEntity<>("skin " + skinService.findSkinByIDinJson(skinID)
-                , HttpStatus.OK);
-
-    }
 
     @PostMapping("/buy/{skinID}")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
@@ -45,7 +37,7 @@ public class SkinController {
         try {
             UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             System.out.println("skinID: " + skinID + "user: " + userDetails);
-            skinService.addSkinByUser(skinID, userDetails.getId());
+            skinService.addSkinToUserAndRemoveFromJson(skinID, userDetails.getId());
             //skinService.addSkinByUser(skinID, user);
             return new ResponseEntity<>("Skin with ID " + skinID + " has been added successfully", HttpStatus.OK);
         } catch (UserNotFoundException | SkinNotFoundException | IOException e) {
@@ -55,14 +47,14 @@ public class SkinController {
         }
     }
 
-    @GetMapping("/mySkins")
+    @GetMapping("/myskins")
     @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     public ResponseEntity<?> getMySkins() {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return new ResponseEntity<>("User with ID " + userDetails.getId() + " has this skins: " + skinService.getMySkins(userDetails.getId()), HttpStatus.OK);
     }
 
-    @PutMapping("{skinID}/{color}")
+    @PutMapping("/{skinID}/{color}")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> changeSkinColor(@PathVariable(value = "skinID") Long skinID, @PathVariable(value = "color") String color) {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -73,28 +65,18 @@ public class SkinController {
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> deleteSkinById(@PathVariable(value = "skinID") Long skinID) throws IOException {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return new ResponseEntity<>(skinService.deleteSkinByUser(skinID, userDetails.getId()), HttpStatus.OK);
+        return new ResponseEntity<>(skinService.deleteSkinByUserAndAddToJson(skinID, userDetails.getId()), HttpStatus.OK);
 
     }
 
-    @GetMapping("/purchasedSkin/{skinID}")
+    @GetMapping("/getskin/{skinID}")
     @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
     public ResponseEntity<?> getSkin(@PathVariable(value = "skinID") Long skinID) {
-        return new ResponseEntity<>("Skin with ID " + skinID + ": " + skinService.getSkinByID(skinID), HttpStatus.OK);
+        return new ResponseEntity<>(skinService.getSkinByID(skinID), HttpStatus.OK);
 
     }
 
-    @GetMapping("/protected-resource")
-    public String getProtectedResource(@RequestHeader("Authorization") String token) {
-        JwtUtils jwtUtil = new JwtUtils();
-        if (jwtUtil.validateJwtToken(token)) {
-            // Token is valid
-            return "Access granted to the protected resource.";
-        } else {
-            // Token is invalid
-            return "Access denied. Invalid token.";
-        }
-    }
+
 
 
 }

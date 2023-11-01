@@ -24,13 +24,17 @@ public class Skin {
 
     @Override
     public String toString() {
-        return "Skin{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", type='" + type + '\'' +
-                ", price='" + price + '\'' +
-                ", colour='" + colour + '\'' +
-                ", description='" + description + '\'' +
+        return "Skin " +
+                "id " + id +
+                ": " + "\n" + "- name: '" + name + '\'' +
+                "\n" +
+                "- type: '" + type + '\'' +
+                "\n" +
+                "- price: '" + price + '\'' +
+                "\n" +
+                "- colour: '" + colour + '\'' +
+                "\n" +
+                "- description: '" + description + '\'' +
                 '}';
     }
 }

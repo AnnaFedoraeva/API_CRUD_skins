@@ -22,7 +22,10 @@ public class User {
 
 
     @OneToMany(mappedBy = "user")
-    private List<Skin> myListOfSkins;
+ private List<Skin> myListOfSkins;
+
+
+
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
