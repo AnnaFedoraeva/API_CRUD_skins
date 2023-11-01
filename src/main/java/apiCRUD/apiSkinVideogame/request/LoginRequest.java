@@ -1,8 +1,10 @@
 package apiCRUD.apiSkinVideogame.request;
 
-import lombok.Getter;
+import lombok.Data;
 
-@Getter
+
+
+@Data
 public class LoginRequest {
 
 
@@ -11,11 +13,4 @@ public class LoginRequest {
 
     private String password;
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 }

@@ -35,7 +35,7 @@ public class SkinService {
 
     public List<Skin> readSkinsFromJson() {
         ObjectMapper objectMapper = new ObjectMapper();
-        List<Skin> skins = new ArrayList<>();
+        List<Skin> skins;
         try {
             Resource resource = resourceLoader.getResource(ROUTE_OF_JSON_FILE_OF_SKINS);
             InputStream inputStream = resource.getInputStream();
@@ -76,12 +76,6 @@ public class SkinService {
         skinRepository.save(skin);
         userRepository.save(user);
 
-        //Remove skin from JSON file
-        // List <Skin> skins = readSkinsFromJson();
-        //skins.remove(skin);
-        //writeSkinsToJson(removeSkinsFromListIfExistsInRepository(skins));
-        //List<Skin> skins = removeSkinFromListOfAvailableSkins(skin.getId());
-        //saveSkinsToJson(skins);
     }
 
     public List<Skin> removeSkinsFromListIfExistsInRepository(List<Skin> skins) {
@@ -90,24 +84,18 @@ public class SkinService {
                 .collect(Collectors.toList());
     }
 
-    public String deleteSkinByUserAndAddToJson(Long skinID, Long userID) throws IOException {
+    public String deleteSkinByUserAndAddToJson(Long skinID, Long userID) {
         User user = findUserByID(userID);
         List<Skin> mySkins = user.getMyListOfSkins();
 
-        mySkins.stream()
+        Skin skinToDelete = mySkins.stream()
                 .filter(sk -> sk.getId().equals(skinID))
                 .findFirst()
-                .ifPresent(skin -> {
-                    mySkins.remove(skin);
-                    skinRepository.delete(skin);
-                    userRepository.save(user);
-                });
-//        Skin skin = mySkins.stream().filter(sk -> sk.getId().equals(skinID)).findFirst()
-//                .orElseThrow(() -> new SkinNotFoundException(skinID));
-//        mySkins.remove(skin);
-       // skinRepository.delete(skin);
+                .orElseThrow(() -> new SkinNotFoundException(skinID));
 
-
+        mySkins.remove(skinToDelete);
+        skinRepository.delete(skinToDelete);
+        userRepository.save(user);
         return "Skin " + skinID + " deleted successfully";
     }
 
@@ -123,32 +111,13 @@ public class SkinService {
                 })
                 .orElseThrow(() -> new SkinNotFoundException(skinID));
 
-
-//        Skin skin = skins.stream().filter(sk -> sk.getId().equals(skinID)).findFirst()
-//                .orElseThrow(() -> new SkinNotFoundException(skinID));
-//        skin.setColour(newColor);
-//        skinRepository.save(skin);
         return "Skin color updated successfully";
 
     }
 
-//    public Skin findSkinByIDinJson(Long skinID) {
-//        List<Skin> skins = readFileAndGetAllAvailable();
-//        System.out.println("skinID: " + skinID);
-//        return skins.stream().filter(sk -> sk.getId().equals(skinID)).findFirst()
-//                .orElhrow(() -> new SkinNotFoundException(skinID));
-//    }
 
 
-//    public void addSkinByUser(Long skinID, User user) throws IOException {
-//        Skin skinToAdd = findSkinByIDinJson(skinID);
-//        skinToAdd.User(user);
-//        user.getMyListOfSkins().add(skinToAdd);
-//        userRepository.save(user);
-//        skinRepository.save(skinToAdd);
-//        List<Skin> skins = removeSkinFromListOfAvailableSkins(skinToAdd.getId());
-//        saveSkinsToJson(skins);
-//    }
+
 
 
     public User findUserByID(Long id) {
@@ -157,26 +126,9 @@ public class SkinService {
     }
 
 
-    public List<Skin> removeSkinFromListOfAvailableSkins(Long skinID) {
-        List<Skin> skins = readSkinsFromJson();
-        skins.remove(findSkinByIDinJson(skinID));
-        return skins;
-    }
 
-    public List<Skin> addSkinFromListOfAvailableSkins(Skin skin) {
-        List<Skin> skins = readSkinsFromJson();
-        // Check if the skin is already in the list.
-        if (!skins.contains(skin)) skins.add(findSkinByIDinJson(skin.getId()));
-        return skins;
-    }
 
-    public void saveSkinsToJson(List<Skin> skins) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        Resource resource = resourceLoader.getResource(ROUTE_OF_JSON_FILE_OF_SKINS);
-        try (FileWriter fileWriter = new FileWriter(resource.getFile())) {
-            objectMapper.writeValue(fileWriter, skins);
-        }
-    }
+
 
 
     public String getMySkins(Long id) {
@@ -195,18 +147,18 @@ public class SkinService {
 
 
 
-    public Skin getSkinByID(Long skinID) {
-        Optional<Skin> skin = skinRepository.findById(skinID);
-        return skin.orElseThrow(() -> new SkinNotFoundException(skinID));
+    public String getSkinByID(Long skinID, Long userID) {
+        User user = findUserByID(userID);
+        List<Skin> skins = user.getMyListOfSkins();
+
+        for (Skin skin : skins) {
+            if (skin.getId().equals(skinID)) {
+                return skin.toString();
+            }
+        }
+
+        throw new SkinNotFoundException(skinID);
     }
 
-
-//    public void writeSkinsToJson(List<Skin> skins) throws IOException {
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        Resource resource = resourceLoader.getResource(ROUTE_OF_JSON_FILE_OF_SKINS);
-//        try (FileWriter fileWriter = new FileWriter(resource.getFile())) {
-//            objectMapper.writeValue(fileWriter, skins);
-//        }
-//    }
 
 }

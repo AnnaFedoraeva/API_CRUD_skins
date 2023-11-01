@@ -34,7 +34,6 @@ public class Skin {
                 "\n" +
                 "- colour: '" + colour + '\'' +
                 "\n" +
-                "- description: '" + description + '\'' +
-                '}';
+                " description: '" + description + '\'';
     }
 }

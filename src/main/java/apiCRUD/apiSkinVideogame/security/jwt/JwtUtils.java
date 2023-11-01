@@ -39,10 +39,6 @@ public class JwtUtils {
                 compact;
     }
 
-
-//    private @NotNull Key key() {
-//        return Keys.secretKeyFor(SignatureAlgorithm.HS256);
-//    }
 private @NotNull Key key() {
     return Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
 }
