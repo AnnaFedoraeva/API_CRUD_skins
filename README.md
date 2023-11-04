@@ -1,21 +1,25 @@
-# SkinVideogame API
+# Skin Videogame API
 
 ## Project Description
 
 This project aims to create a RESTful API developed in Java with the Spring framework that allows users to query, purchase, modify, and delete skins for a video game. The application will provide a set of endpoints that will enable users to interact with the skins in the system.
-
 ## Table of Contents
 
+- [Project Description](#project-description)
 - [Features](#features)
-- [API Endpoints](#api-endpoints)
-- [API Endpoints](#api-endpoints)
 - [Requisites](#requisites)
 - [Configuration](#configuration)
-- [Database](#database)
-- [JWT](#jwt)
+    - [Clone the repo](#clone-the-repo)
+    - [Database](#database)
+- [JWT Configuration](#jwt-configuration)
 - [Run Spring Boot Application](#run-spring-boot-application)
 - [Run following SQL insert statements](#run-following-sql-insert-statements)
+- [API Endpoints](#api-endpoints)
 - [Usage of Postman](#usage-of-postman)
+- [Postman Collections for Authentication](#postman-collections-for-authentication)
+- [Postman Collections for API Endpoints](#postman-collections-for-api-endpoints)
+- [License](#license)
+
 ###  Features
 
 - User registration and authentication using JWT.
@@ -25,16 +29,6 @@ This project aims to create a RESTful API developed in Java with the Spring fram
 - API documentation using Postman collections.
 - Skin Model: The application defines a Skin model that includes fields such as id, name, type, price, color, etc.
 - Read Skins: The application reads the available skins from a JSON file.
-
-
-### API Endpoints
-GET /skins/available: Returns a list of all available skins for purchase.
-POST /skins/buy/{id}: Allows users to purchase a skin and store it in the database.
-GET /skins/myskins: Returns a list of skins purchased by the user.
-PUT /skins/{id}/{color}: Allows users to change the color of a purchased skin.
-DELETE /skins/delete/{id}: Allows users to delete a purchased skin.
-GET /skin/getskin/{id}: Returns a specific skin.
-
 
 ### Requisites
 
@@ -60,13 +54,13 @@ spring.datasource.username=usuario
 spring.datasource.password=contraseña
 ```
 
-#### JWT
+### JWT Configuration
 
-Configure the secret key for JWT generation and validation in `src/main/resources/application.properties`.
+To use JSON Web Tokens (JWT) for authentication, you need to configure a secret key and set the token expiration in the `application.properties` file.
 
 ```properties
-jwt.secret=clave_secreta
-jwt.expiration-ms=tiempo_de_expiracion_en_milisegundos
+jwt.secret=your_secret_key_here
+jwt.expiration-ms=token_expiration_in_milliseconds
 ```
 ### Run Spring Boot application
 
@@ -82,9 +76,24 @@ INSERT INTO roles(name) VALUES('ROLE_MODERATOR');
 INSERT INTO roles(name) VALUES('ROLE_ADMIN');
 ```
 
+
+### API Endpoints
+
+- GET /skins/available: Returns a list of all available skins for purchase.
+- POST /skins/buy/{id}: Allows users to purchase a skin and store it in the database.
+- GET /skins/myskins: Returns a list of skins purchased by the user.
+- PUT /skins/{id}/{color}: Allows users to change the color of a purchased skin.
+- DELETE /skins/delete/{id}: Allows users to delete a purchased skin.
+- GET /skin/getskin/{id}: Returns a specific skin.
+
 ### Usage of Postman
 
-Register some users with `/api/auth/signup`.
+To get started with these collections:
+1. Click on the "Run in Postman" button provided above the respective collection to import it into your Postman workspace.
+2. Ensure you set any necessary environment variables or configurations as specified in the collection.
+3. Execute individual requests within Postman to test and explore the authentication and API endpoints according to your requirements.
+
+Signup some users with `/api/auth/signup`.
 
 ***Example***:
 ```json
@@ -96,9 +105,26 @@ Register some users with `/api/auth/signup`.
 }
 ```
 
-Login an account: POST `/api/auth/signin`.
+Signin: POST `/api/auth/signin`.
 
 Send all requests with an Authentication Header with `Bearer HERE_YOUR_TOKEN`
 
-There is a Postman collection (postman_collection.json) included, which contains request examples for testing the API endpoints. Import this collection into Postman and configure the necessary environment variables.
+### Postman Collections for Authentication
 
+This collection focuses on the signup and signin processes, providing a set of requests for user registration and login. You can use it to test and explore the registration and authentication flows of your API.
+
+[Postman Authentication Collection](<signup.postman_collection.json>)
+
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/24479347-0e395196-d630-4bd9-97b8-0e0733a11fd9?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D24479347-0e395196-d630-4bd9-97b8-0e0733a11fd9%26entityType%3Dcollection%26workspaceId%3D059651f8-4079-4c7a-b74b-21b5df992572)
+
+### Postman Collections for API Endpoints
+
+This collection covers a broader range of RESTful API endpoints related to Skin Videogame. It's a valuable resource for testing and exploring various API functionalities beyond authentication.
+
+[Postman RESTful Collection](<RESTful_API_Skin_Videogame.postman_collection.json>)
+
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/24479347-ccb0f051-cfe8-4c40-b0d5-c5a9554a0260?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D24479347-ccb0f051-cfe8-4c40-b0d5-c5a9554a0260%26entityType%3Dcollection%26workspaceId%3D059651f8-4079-4c7a-b74b-21b5df992572)
+
+### License
+
+This project is licensed under the MIT License.
