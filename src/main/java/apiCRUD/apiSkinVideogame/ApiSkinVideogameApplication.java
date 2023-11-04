@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class ApiSkinVideogameApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ApiSkinVideogameApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ApiSkinVideogameApplication.class, args);
+    }
 
 }
