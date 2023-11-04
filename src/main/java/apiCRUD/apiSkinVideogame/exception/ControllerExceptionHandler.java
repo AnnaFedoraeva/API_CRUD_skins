@@ -11,7 +11,7 @@ import java.io.IOException;
 @RestControllerAdvice
 public class ControllerExceptionHandler {
     @ExceptionHandler(SkinNotAvailableException.class)
-    ResponseEntity<String> skinNotAvailableException (SkinNotAvailableException ex) {
+    ResponseEntity<String> skinNotAvailableException(SkinNotAvailableException ex) {
         // You can customize the response as needed
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while reading the file: " + ex.getMessage());
     }
